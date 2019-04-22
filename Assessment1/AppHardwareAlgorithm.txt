@@ -1,0 +1,35 @@
+tkinter stuff
+
+use .pack() instead of .grid()
+use .pack_info() to return a list of arguments for .pack()
+
+
+
+
+==========================================================
+
+
+User input - customer name - stored
+
+loop
+    User input - purchased item price - stored
+    price added to 'total' variable
+    if user enters '0', end loop
+
+display total variable
+
+user input (allow for case difference) - method of payment - stored
+
+for payment type 1 - credit
+    if total is less than 20
+        display warning about payment method
+        switch to payment type 2
+    if total is more than 20
+        display message about successfully processed payment
+        END PROGRAM
+
+for payment type 2 - cash
+    user input - amount of money given - stored
+    calculation - money given less total
+    display total and change given
+    PROGRAM END

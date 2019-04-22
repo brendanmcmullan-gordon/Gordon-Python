@@ -1,0 +1,79 @@
+1. Get a name and date from the computer
+user. Display the name and date on the
+screen.
+2. Get a word from the computer user.
+Write the word on the screen twice, deparated by 4 dollar signs.
+3. Get two whole numbers from the computer user. Multiply the two
+numbers together.
+Display the result.
+4. Get two whole numbers from the computer user. Add the two
+numbers together.
+Display the two numbers and the result in a user-friendly way. Add 10 to the first
+number.
+Add 20 to the second number. Display the two numbers again.
+Add them together and display the result.
+
+1.
+userName = getUserNameFromKeyboard()
+userDate = getUserDateFromKeyboard()
+display userName
+display userDate
+
+
+2.
+str userWord
+userWord = getWordFromKeyboard()
+displayWordTwice():
+    display userWord + "$$$$" + display userWord
+
+define userWord as a string variable
+recieve the user's input from the keyboard and assign it as the userWord variable
+display the userWord variable and concatenate it with "$$$$" followed by the userWord variable again
+
+3.
+int userNumber1
+int userNumber2
+int userNumberMultiply
+userNumber1 = getNumberFromKeyboard()
+userNumber2 = getNumberFromKeyboard()
+userNumberMultiply = userNumber1 * userNumber2
+display userNumberMultiply
+
+define 3 integers, one for each number (userNumber1, userNumber2) and one for the final result (userNumberMultiply)
+recieve the user's number input from the keyboard and assign it as userNumber1
+again, recieve the user's number input from the keyboard, but assign it as userNumber2
+multiply userNumber1 and userNumber2 together and assign it to userMultiply
+display userMultiply
+
+4.
+int userNumber1
+int userNumber2
+int userNumberAdd
+int userNumber1Add
+int userNumber2Add
+int userNumberFinalAdd
+
+userNumber1 = getNumberFromKeyboard()
+userNumber2 = getNumberFromKeyboard()
+displayUserNumbers1():
+    print "userNumber1" + " " + "userNumber2"
+    print userNumber1 + userNumber2
+userNumber1Add = userNumber1 + 10
+userNumber2Add = userNumber2 + 20
+displayUserNumbers2():
+    print "userNumber1Add" + " " + "userNumber2Add"
+userNumberFinalAdd = userNumber1Add + userNumber2Add
+displayUserNumberFinalAdd():
+    print userNumberFinalAdd
+
+define variables for each stage of the number (userNumber1, userNumber2) and number additions (userNumberAdd, userNumber1Add, userNumber2Add, userNumberFinalAdd)
+recieve the user's number input from the keyboard and assign it as userNumber1
+recieve the user's number input from the keyboard and assign it as userNumber2
+display both userNumber1 and userNumber2, with a space between them so that they are readable
+add both userNumber1 and userNumber2, assign it to userNumberAdd and display it on the screen
+add 10 to userNumber1 and assign it as userNumber1Add
+add 20 to userNumber2 and assign it as userNumber2Add
+display both userNumber1Add and userNumber2Add, with a space between them so that they are readable
+add userNumber1Add to userNumber2Add and assign it as userNumberFinalAdd
+display userNumberFinalAdd
+
