@@ -1,13 +1,8 @@
-tkinter stuff
+Name: Brendan McMullan
+ID: 12135005
+Date: 29/04/2019
 
-use .pack() instead of .grid()
-use .pack_info() to return a list of arguments for .pack()
-
-
-
-
-==========================================================
-
+Assessment 1 - TKinter program algorithm
 
 User input - customer name - stored
 
@@ -16,7 +11,7 @@ loop
     price added to 'total' variable
     if user enters '0', end loop
 
-display total variable
+display 'total' variable
 
 user input (allow for case difference) - method of payment - stored
 

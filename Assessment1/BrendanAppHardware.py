@@ -16,12 +16,6 @@ while itemPrice != 0:
     except ValueError:
         continue
 
-    # if itemPrice == "":
-    #     continue
-    # else:
-    #     itemPrice = float(itemPrice)
-    #     totalCost += itemPrice
-
 print("Your total is: $%.2f" %totalCost)
 print()
 payMethod = input("Please enter your method of payment (Cash or Credit): ")

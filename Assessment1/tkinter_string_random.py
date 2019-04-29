@@ -1,12 +1,14 @@
 #TKinter button and label change testing
 from tkinter import *
+from decimal import *
 import random
 
 #number randomiser
 def randomButtom():
-    randomNum = random.randint(1, 1000)
-    randomNum = str(randomNum)
+    randomNum = random.random()
+    randomNum = Decimal(randomNum).quantize(Decimal('.01'))
     labelText1.set(randomNum)
+
 
 #main window
 window1 = Tk()
