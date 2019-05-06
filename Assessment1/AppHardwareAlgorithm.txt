@@ -27,4 +27,4 @@ for payment type 2 - cash
     user input - amount of money given - stored
     calculation - money given less total
     display total and change given
-    PROGRAM END
+    END PROGRAM
