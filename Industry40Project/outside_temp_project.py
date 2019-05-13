@@ -18,3 +18,6 @@ print("The air temperature at Geelong Racecourse is", weatherdata['observations'
 # other
 print("The relative humidity at Geelong Racecourse is", weatherdata['observations']['data'][0]['rel_hum'], "%")
 print("The wind speed at Geelong Racecourse is", weatherdata['observations']['data'][0]['wind_spd_kmh'], "km/h")
+
+
+# install mysql and python into an ubuntu box and test mysql stuff from there
