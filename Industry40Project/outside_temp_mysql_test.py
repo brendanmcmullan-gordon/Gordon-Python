@@ -32,9 +32,9 @@ c = db.cursor()
 # c.execute("ALTER TABLE weather ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY")
 
 # Insert table entries
-# sql = "INSERT INTO weather (temperature, other) VALUES (%s, %s)"
-# val = ("30.6", "other stuff")
-# c.execute(sql, val)
-# db.commit()
+sql = "INSERT INTO weather (OUTSIDETEMP) VALUES (%s)"
+val = ("30.6",)
+c.execute(sql, val)
+db.commit()
 
 

@@ -6,12 +6,13 @@ from tkinter import *
 from decimal import *
 #   Decimal() is used to easily limit decimal places without using a print statement
 
-# Customer Name Entry Submit Button
-#   pull the customer's name into a variable
-#   go to next window on submit
 def twoPlaces(x):
     a = Decimal(x).quantize(Decimal('.01'))
     return a
+
+# Customer Name Entry Submit Button
+#   pull the customer's name into a variable
+#   go to next window on submit
 
 def getCustName():
     global custName
