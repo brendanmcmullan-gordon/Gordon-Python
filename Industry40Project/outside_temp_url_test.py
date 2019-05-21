@@ -14,7 +14,6 @@ weatherdata = json.loads(jsondata.data.decode('utf-8'))
 
 # access the air temp key from the converted dictionary
 print("The air temperature at Geelong Racecourse is", weatherdata['observations']['data'][0]['air_temp'], "degrees C")
-
+print(weatherdata['observations']['data'][0]['local_date_time'])
 # other
-print("The relative humidity at Geelong Racecourse is", weatherdata['observations']['data'][0]['rel_hum'], "%")
-print("The wind speed at Geelong Racecourse is", weatherdata['observations']['data'][0]['wind_spd_kmh'], "km/h")
+
