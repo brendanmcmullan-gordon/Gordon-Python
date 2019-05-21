@@ -3,6 +3,7 @@ import json
 import urllib3
 import datetime
 import mysql.connector
+from mysql.connector import errorcode
 
 db = mysql.connector.connect(
     host="localhost",
@@ -12,6 +13,19 @@ db = mysql.connector.connect(
 )
 
 c = db.cursor()
+
+# attempt to create a table and throw an error if it already exists
+try:
+    c.execute("CREATE TABLE weatherData ("
+              "ID INT AUTO_INCREMENT PRIMARY KEY,"
+              "TIME_STAMP TIMESTAMP,"
+              "OUTSIDETEMP VARCHAR(4),"
+              "LOCAL_DATE_TIME DATETIME)")
+except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+            print("Table already exists.")
+        else:
+            print(err.msg)
 
 # use urllib3 and go through a proxy to access the internet
 # http = urllib3.PoolManager < no proxy
@@ -23,7 +37,7 @@ jsondata = httpproxy.request('GET', 'http://www.bom.gov.au/fwo/IDV60801/IDV60801
 # decode the file into utf-8, then read it with the json library and convert it to a python object
 weatherdata = json.loads(jsondata.data.decode('utf-8'))
 
-# access the air temp key from the converted dictionary
+# access the air temp and local date time keys from the converted dictionary
 airtemp = str(weatherdata['observations']['data'][0]['air_temp'])
 localdatetime = str(weatherdata['observations']['data'][0]['local_date_time'])
 
@@ -66,7 +80,7 @@ format_date_time = str(yrmonth+day+" "+hrs+":"+min+":00")
 # print("The wind speed at Geelong Racecourse is", weatherdata['observations']['data'][0]['wind_spd_kmh'], "km/h")
 
 # insert airtemp and datetime into a mysql db
-sql = ("INSERT INTO weather (OUTSIDETEMP, local_date_time) VALUES (%s, %s)")
+sql = ("INSERT INTO weatherData (OUTSIDE_TEMP, LOCAL_DATE_TIME) VALUES (%s, %s)")
 val = (airtemp, format_date_time)
 c.execute(sql, val)
 db.commit()
