@@ -5,21 +5,26 @@ import datetime
 import mysql.connector
 from mysql.connector import errorcode
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="Password1",
-    database="sensors"
-)
+try:
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="Password1",
+        database="sensors"
+    )
 
-c = db.cursor()
+    c = db.cursor(buffered=True)
+# catch any mysql errors occurring on connecting to the db
+except mysql.connector.Error as err:
+    print(err.errno, err.msg)
+    exit()
 
 # attempt to create a table and throw an error if it already exists
 try:
     c.execute("CREATE TABLE weatherData ("
               "ID INT AUTO_INCREMENT PRIMARY KEY,"
               "TIME_STAMP TIMESTAMP,"
-              "OUTSIDETEMP VARCHAR(4),"
+              "OUTSIDE_TEMP VARCHAR(4),"
               "LOCAL_DATE_TIME DATETIME)")
 except mysql.connector.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
@@ -37,53 +42,37 @@ jsondata = httpproxy.request('GET', 'http://www.bom.gov.au/fwo/IDV60801/IDV60801
 # decode the file into utf-8, then read it with the json library and convert it to a python object
 weatherdata = json.loads(jsondata.data.decode('utf-8'))
 
-# access the air temp key from the converted dictionary
+# access the air temp and datetime keys from the converted dictionary
 airtemp = str(weatherdata['observations']['data'][0]['air_temp'])
-localdatetime = str(weatherdata['observations']['data'][0]['local_date_time'])
+ldtstr = str(weatherdata['observations']['data'][0]['local_date_time_full'])
 
-# get today's date
-today = str(datetime.date.today())
+# ldtformat = formatDateTime(localdatetime)
+ldtformat = ldtstr[0:4] + "-" + ldtstr[4:6] + "-" + ldtstr[6:8] + " " + ldtstr[8:10] + ":" + ldtstr[10:12] + ":" + ldtstr[12:14]
 
-# strip the day from today's date
-yrmonth = '{:.8}'.format(today)
+try:
+    # fetch the datetime from the last inserted row
+    c.execute("SELECT LOCAL_DATE_TIME FROM weatherData ORDER BY ID DESC LIMIT 1")
+    olddatetime = c.fetchone()[0]
+    olddatetime = str(olddatetime)
 
-# split the BOM datetime into day and time
-splitstr = localdatetime.split('/')
 
-# set day to the first in the split list
-day = splitstr[0]
+    # insert airtemp and datetime into a mysql db if the datetime has been updated
+    if not ldtformat == olddatetime:
+        sql = ("INSERT INTO weatherData (OUTSIDE_TEMP, LOCAL_DATE_TIME) VALUES (%s, %s)")
+        val = (airtemp, ldtformat)
+        c.execute(sql, val)
+        db.commit()
+    elif ldtformat == olddatetime:
+        print("Temperature not updated, skipping table insert.")
 
-# split the time string into hours and minutes
-timelist = splitstr[1].split(':')
+# if there are no entries in the table, insert an entry without checking for the last datetime
+except TypeError:
+    sql = ("INSERT INTO weatherData (OUTSIDE_TEMP, LOCAL_DATE_TIME) VALUES (%s, %s)")
+    val = (airtemp, ldtformat)
+    c.execute(sql, val)
+    db.commit()
+    print("Inserting first value")
 
-# set hrs to the first in the time list
-hrs = timelist[0]
-
-# if pm is on the end of the minutes, add 12 to 'convert' to 24-hour time
-if splitstr[1].endswith('pm') == True:
-    hrs = int(hrs)
-    hrs += 12
-    hrs = str(hrs)
-
-# set min to the second in the time list
-min = timelist[1]
-
-# strip am or pm from the end of the minutes
-min = min.rstrip('apm')
-
-# create the datetime string for sql
-format_date_time = str(yrmonth+day+" "+hrs+":"+min+":00")
-
-# other
-# print("The air temperature at Geelong Racecourse is", weatherdata['observations']['data'][0]['air_temp'], "degrees C")
-# print("The relative humidity at Geelong Racecourse is", weatherdata['observations']['data'][0]['rel_hum'], "%")
-# print("The wind speed at Geelong Racecourse is", weatherdata['observations']['data'][0]['wind_spd_kmh'], "km/h")
-
-# insert airtemp and datetime into a mysql db
-sql = ("INSERT INTO weatherData (OUTSIDE_TEMP, LOCAL_DATE_TIME) VALUES (%s, %s)")
-val = (airtemp, format_date_time)
-c.execute(sql, val)
-db.commit()
 
 c.close()
 db.close()
