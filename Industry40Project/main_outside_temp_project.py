@@ -1,7 +1,6 @@
 # import json, urllib3 and mysql.connector
 import json
 import urllib3
-import datetime
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -46,7 +45,6 @@ weatherdata = json.loads(jsondata.data.decode('utf-8'))
 airtemp = str(weatherdata['observations']['data'][0]['air_temp'])
 ldtstr = str(weatherdata['observations']['data'][0]['local_date_time_full'])
 
-# ldtformat = formatDateTime(localdatetime)
 ldtformat = ldtstr[0:4] + "-" + ldtstr[4:6] + "-" + ldtstr[6:8] + " " + ldtstr[8:10] + ":" + ldtstr[10:12] + ":" + ldtstr[12:14]
 
 try:
@@ -54,7 +52,6 @@ try:
     c.execute("SELECT LOCAL_DATE_TIME FROM weatherData ORDER BY ID DESC LIMIT 1")
     olddatetime = c.fetchone()[0]
     olddatetime = str(olddatetime)
-
 
     # insert airtemp and datetime into a mysql db if the datetime has been updated
     if not ldtformat == olddatetime:
@@ -72,7 +69,6 @@ except TypeError:
     c.execute(sql, val)
     db.commit()
     print("Inserting first value")
-
 
 c.close()
 db.close()
